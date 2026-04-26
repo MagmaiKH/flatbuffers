@@ -1682,47 +1682,55 @@ static void PrintSourceService(grpc_generator::Printer* printer,
             "AddMethod(new ::grpc::internal::RpcServiceMethod(\n"
             "    $prefix$$Service$_method_names[$Idx$],\n"
             "    ::grpc::internal::RpcMethod::NORMAL_RPC,\n"
+            "    nullptr));\n"
+            "::grpc::Service::MarkMethodCallback($Idx$,\n"
             "    new ::grpc::internal::CallbackUnaryHandler<$Request$, "
             "$Response$>(\n"
             "      [this](::grpc::CallbackServerContext* ctx, const $Request$* "
             "req, $Response$* resp) {\n"
             "        return this->$Method$(ctx, req, resp);\n"
-            "      })));\n");
+            "      }));\n");
       } else if (ClientOnlyStreaming(method.get())) {
         printer->Print(*vars,
                        "AddMethod(new ::grpc::internal::RpcServiceMethod(\n"
                        "    $prefix$$Service$_method_names[$Idx$],\n"
                        "    ::grpc::internal::RpcMethod::CLIENT_STREAMING,\n"
+                       "    nullptr));\n"
+                       "::grpc::Service::MarkMethodCallback($Idx$,\n"
                        "    new "
                        "::grpc::internal::CallbackClientStreamingHandler<$"
                        "Request$, $Response$>(\n"
                        "      [this](::grpc::CallbackServerContext* ctx, "
                        "$Response$* resp) {\n"
                        "        return this->$Method$(ctx, resp);\n"
-                       "      })));\n");
+                       "      }));\n");
       } else if (ServerOnlyStreaming(method.get())) {
         printer->Print(*vars,
                        "AddMethod(new ::grpc::internal::RpcServiceMethod(\n"
                        "    $prefix$$Service$_method_names[$Idx$],\n"
                        "    ::grpc::internal::RpcMethod::SERVER_STREAMING,\n"
+                       "    nullptr));\n"
+                       "::grpc::Service::MarkMethodCallback($Idx$,\n"
                        "    new "
                        "::grpc::internal::CallbackServerStreamingHandler<$"
                        "Request$, $Response$>(\n"
                        "      [this](::grpc::CallbackServerContext* ctx, const "
                        "$Request$* req) {\n"
                        "        return this->$Method$(ctx, req);\n"
-                       "      })));\n");
+                       "      }));\n");
       } else if (method->BidiStreaming()) {
         printer->Print(
             *vars,
             "AddMethod(new ::grpc::internal::RpcServiceMethod(\n"
             "    $prefix$$Service$_method_names[$Idx$],\n"
             "    ::grpc::internal::RpcMethod::BIDI_STREAMING,\n"
+            "    nullptr));\n"
+            "::grpc::Service::MarkMethodCallback($Idx$,\n"
             "    new ::grpc::internal::CallbackBidiHandler<$Request$, "
             "$Response$>(\n"
             "      [this](::grpc::CallbackServerContext* ctx) {\n"
             "        return this->$Method$(ctx);\n"
-            "      })));\n");
+            "      }));\n");
       }
     }
     printer->Outdent();
